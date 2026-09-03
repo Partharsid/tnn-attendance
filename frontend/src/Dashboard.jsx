@@ -4,9 +4,11 @@ import { LogOut, Camera, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import Webcam from 'react-webcam';
 import { format } from 'date-fns';
 import scheduleData from './data/schedule.json';
-import usersMap from './data/users.json'; // Maps email to name, or we fallback to user_metadata.full_name
+import usersMap from './data/users.json'; 
+import AdminDashboard from './AdminDashboard';
 
 export default function Dashboard({ session }) {
+
   const [userName, setUserName] = useState('');
   const [userSlots, setUserSlots] = useState([]);
   const [currentSlot, setCurrentSlot] = useState(null);
@@ -234,6 +236,10 @@ export default function Dashboard({ session }) {
               </button>
             </div>
           </div>
+        )}
+        
+        {session.user.email === 'parth.25bcd7027@vitapstudent.ac.in' && (
+          <AdminDashboard />
         )}
       </main>
     </div>
