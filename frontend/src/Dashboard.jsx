@@ -150,18 +150,18 @@ export default function Dashboard({ session }) {
   }, [webcamRef, location, session, userName, currentSlot]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">TNN Attendance</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">{session.user.email}</span>
-          <button onClick={handleLogout} className="text-gray-500 hover:text-red-600">
-            <LogOut size={20} />
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <header className="bg-white shadow-sm px-4 py-3 flex justify-between items-center sticky top-0 z-10">
+        <h1 className="text-lg font-bold text-gray-800">TNN Attendance</h1>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-gray-600 truncate max-w-[120px] sm:max-w-full">{session.user.email}</span>
+          <button onClick={handleLogout} className="text-gray-500 hover:text-red-600 p-1">
+            <LogOut size={18} />
           </button>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto p-6 mt-6">
+      <main className="max-w-4xl mx-auto p-4 mt-2">
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
           <h2 className="text-2xl font-semibold mb-2">Welcome, {userName}</h2>
           
@@ -200,7 +200,7 @@ export default function Dashboard({ session }) {
               )}
             </div>
 
-            <div className="rounded-lg overflow-hidden border bg-black mb-6 max-w-md mx-auto aspect-video relative">
+            <div className="rounded-lg overflow-hidden border bg-black mb-6 max-w-sm mx-auto aspect-[3/4] relative">
               <Webcam
                 audio={false}
                 ref={webcamRef}
@@ -219,20 +219,20 @@ export default function Dashboard({ session }) {
               </div>
             )}
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <button
                 onClick={() => captureAndMarkAttendance('START')}
                 disabled={capturing || !location || !currentSlot}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50 max-w-xs"
+                className="w-full sm:flex-1 bg-green-600 hover:bg-green-700 text-white py-4 sm:py-3 px-4 rounded-xl sm:rounded-lg font-medium transition-colors disabled:opacity-50 max-w-sm mx-auto sm:max-w-xs shadow-md"
               >
-                Mark Start Slot
+                Start Slot
               </button>
               <button
                 onClick={() => captureAndMarkAttendance('END')}
                 disabled={capturing || !location || !currentSlot}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50 max-w-xs"
+                className="w-full sm:flex-1 bg-red-600 hover:bg-red-700 text-white py-4 sm:py-3 px-4 rounded-xl sm:rounded-lg font-medium transition-colors disabled:opacity-50 max-w-sm mx-auto sm:max-w-xs shadow-md"
               >
-                Mark End Slot
+                End Slot
               </button>
             </div>
           </div>
