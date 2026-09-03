@@ -9,21 +9,21 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    const fetchLogs = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('attendance_logs')
+        .select('*')
+        .order('timestamp', { ascending: false });
+
+      if (!error && data) {
+        setLogs(data);
+      }
+      setLoading(false);
+    };
+
     fetchLogs();
   }, []);
-
-  const fetchLogs = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from('attendance_logs')
-      .select('*')
-      .order('timestamp', { ascending: false });
-
-    if (!error && data) {
-      setLogs(data);
-    }
-    setLoading(false);
-  };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this log?")) return;

@@ -9,7 +9,24 @@ import AdminDashboard from './AdminDashboard';
 
 export default function Dashboard({ session }) {
 
-  const [userName, setUserName] = useState('');
+  const email = session.user.email;
+  const fullName = session.user.user_metadata?.full_name || email;
+  
+  // Determine the user's registered name in the schedule
+  let matchedName = null;
+  for (const [name, mappedEmail] of Object.entries(usersMap)) {
+    if (mappedEmail.toLowerCase() === email.toLowerCase()) {
+      matchedName = name;
+      break;
+    }
+  }
+  
+  if (!matchedName && usersMap.hasOwnProperty(fullName)) {
+    matchedName = fullName;
+  }
+
+  const userName = matchedName || fullName;
+
   const [userSlots, setUserSlots] = useState([]);
   const [currentSlot, setCurrentSlot] = useState(null);
   const [location, setLocation] = useState(null);
@@ -20,27 +37,6 @@ export default function Dashboard({ session }) {
   const webcamRef = useRef(null);
 
   useEffect(() => {
-    const email = session.user.email;
-    const fullName = session.user.user_metadata.full_name;
-    
-    // Determine the user's registered name in the schedule
-    // First check if email is explicitly mapped in users.json
-    // users.json has format { "Name in Schedule": "email@vitap..." }
-    let matchedName = null;
-    for (const [name, mappedEmail] of Object.entries(usersMap)) {
-      if (mappedEmail.toLowerCase() === email.toLowerCase()) {
-        matchedName = name;
-        break;
-      }
-    }
-    
-    // Fallback: Check if their Google Name exactly matches a name in users.json keys
-    if (!matchedName && usersMap.hasOwnProperty(fullName)) {
-      matchedName = fullName;
-    }
-
-    setUserName(matchedName || fullName);
-
     if (matchedName) {
       // Filter slots for this user
       const slots = scheduleData.filter(
@@ -74,7 +70,7 @@ export default function Dashboard({ session }) {
     } else {
       setLocError('Geolocation not supported by this browser.');
     }
-  }, [session]);
+  }, [session, matchedName]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -103,10 +99,11 @@ export default function Dashboard({ session }) {
       setUploadStatus('Uploading photo...');
       
       // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('attendance-photos')
         .upload(fileName, blob, {
-          contentType: 'image/jpeg'
+          contentType: 'image/jpeg',
+          upsert: true
         });
         
       if (uploadError) throw uploadError;
