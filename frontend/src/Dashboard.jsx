@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from './supabase';
-import { LogOut, Camera, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
+import { LogOut, Camera, MapPin, AlertCircle, RefreshCw, SwitchCamera } from 'lucide-react';
 import Webcam from 'react-webcam';
 import { format } from 'date-fns';
 import scheduleData from './data/schedule.json';
@@ -33,8 +33,30 @@ export default function Dashboard({ session }) {
   const [locError, setLocError] = useState('');
   const [capturing, setCapturing] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [facingMode, setFacingMode] = useState('user');
 
   const webcamRef = useRef(null);
+
+  const requestLocation = useCallback(() => {
+    setLocError('Acquiring GPS location...');
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          setLocError('');
+        },
+        (err) => {
+          setLocError(`GPS Error: ${err.message}. Please enable location and try again.`);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    } else {
+      setLocError('Geolocation not supported by this browser.');
+    }
+  }, []);
 
   useEffect(() => {
     if (matchedName) {
@@ -53,24 +75,9 @@ export default function Dashboard({ session }) {
       setCurrentSlot(todaysSlots.length > 0 ? todaysSlots[0] : null);
     }
     
-    // Request location
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
-        },
-        (err) => {
-          setLocError(err.message);
-        },
-        { enableHighAccuracy: true }
-      );
-    } else {
-      setLocError('Geolocation not supported by this browser.');
-    }
-  }, [session, matchedName]);
+    // Request location initially
+    requestLocation();
+  }, [session, matchedName, requestLocation]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -191,9 +198,14 @@ export default function Dashboard({ session }) {
             <div className="mb-4 text-sm flex items-center gap-2">
               <MapPin size={16} className={location ? "text-green-500" : "text-amber-500"} />
               {location ? (
-                <span className="text-green-700">GPS Location Acquired</span>
+                <span className="text-green-700 font-medium">GPS Location Acquired</span>
               ) : (
-                <span className="text-amber-600">{locError || "Acquiring GPS location..."}</span>
+                <div className="flex items-center gap-2 text-amber-600">
+                  <span>{locError || "Acquiring GPS location..."}</span>
+                  <button onClick={requestLocation} className="p-1 hover:bg-amber-100 rounded-full" title="Retry GPS">
+                    <RefreshCw size={14} />
+                  </button>
+                </div>
               )}
             </div>
 
@@ -202,9 +214,18 @@ export default function Dashboard({ session }) {
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
-                videoConstraints={{ facingMode: "user" }}
+                videoConstraints={{ facingMode }}
+                mirrored={facingMode === "user"}
+                forceScreenshotSourceSize={true}
                 className="w-full h-full object-cover"
               />
+              <button 
+                onClick={() => setFacingMode(prev => prev === "user" ? "environment" : "user")}
+                className="absolute bottom-4 right-4 bg-gray-900/60 p-3 rounded-full text-white hover:bg-gray-800 transition-colors shadow-lg backdrop-blur-sm border border-gray-600/50 z-10"
+                title="Flip Camera"
+              >
+                <SwitchCamera size={22} />
+              </button>
             </div>
 
             {uploadStatus && (
