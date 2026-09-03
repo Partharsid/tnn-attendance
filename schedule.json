@@ -1,0 +1,296 @@
+[
+  {
+    "day": "Tuesday",
+    "time": "09:00 - 10:00 AM",
+    "lead": "Bharat Chandra Eda",
+    "support": [
+      "Shubham Swain",
+      "Bhargav Vishal"
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "time": "10:00 - 11:00 AM",
+    "lead": "Aayush Nair",
+    "support": [
+      "Harsh Vardhan Anand",
+      "Debanjan Mukherjee"
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "time": "11:00 - 12:00 PM",
+    "lead": "Tanay Chaudhary",
+    "support": [
+      "Sriram Kalluri",
+      "Yaswanth Reddy Bontu"
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "time": "12:00 - 01:00 PM",
+    "lead": "Ayush Shah",
+    "support": [
+      "Hemant"
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "time": "02:00 - 03:00 PM",
+    "lead": "Vaibhav Mishra",
+    "support": [
+      "Shaik Gani Rehan"
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "time": "03:00 - 04:00 PM",
+    "lead": "Divya Kaneria",
+    "support": [
+      "Rithwik Singh"
+    ]
+  },
+  {
+    "day": "Tuesday",
+    "time": "04:00 - 05:00 PM",
+    "lead": "Bhushan Gupta",
+    "support": [
+      "Majety Gayathri"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "09:00 - 10:00 AM",
+    "lead": "Divya Kaneria",
+    "support": [
+      "Bhargav Vishal",
+      "Vaibhav Mishra"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "10:00 - 11:00 AM",
+    "lead": "Sriram Kalluri",
+    "support": [
+      "Aayush Nair",
+      "Harsh Vardhan Anand"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "11:00 - 12:00 PM",
+    "lead": "Bhushan Gupta",
+    "support": [
+      "Bharat Chandra Eda"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "12:00 - 01:00 PM",
+    "lead": "Shubham Swain",
+    "support": [
+      "Tanay Chaudhary",
+      "Debanjan Mukherjee"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "02:00 - 03:00 PM",
+    "lead": "Majety Gayathri",
+    "support": [
+      "Rithwik Singh"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "03:00 - 04:00 PM",
+    "lead": "Shaik Gani Rehan",
+    "support": [
+      "Yaswanth Reddy Bontu"
+    ]
+  },
+  {
+    "day": "Wednesday",
+    "time": "04:00 - 05:00 PM",
+    "lead": "Ayush Shah",
+    "support": [
+      "Hemant"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "09:00 - 10:00 AM",
+    "lead": "Debanjan Mukherjee",
+    "support": [
+      "Aayush Nair",
+      "Tanay Chaudhary"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "10:00 - 11:00 AM",
+    "lead": "Ayush Shah",
+    "support": [
+      "Divya Kaneria",
+      "Shubham Swain"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "11:00 - 12:00 PM",
+    "lead": "Hemant",
+    "support": [
+      "Bharat Chandra Eda",
+      "Bhargav Vishal"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "12:00 - 01:00 PM",
+    "lead": "Majety Gayathri",
+    "support": [
+      "Vaibhav Mishra",
+      "Harsh Vardhan Anand"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "02:00 - 03:00 PM",
+    "lead": "Bhushan Gupta",
+    "support": [
+      "Rithwik Singh"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "03:00 - 04:00 PM",
+    "lead": "Sriram Kalluri",
+    "support": [
+      "Yaswanth Reddy Bontu"
+    ]
+  },
+  {
+    "day": "Thursday",
+    "time": "04:00 - 05:00 PM",
+    "lead": "Shaik Gani Rehan",
+    "support": []
+  },
+  {
+    "day": "Friday",
+    "time": "09:00 - 10:00 AM",
+    "lead": "Bharat Chandra Eda",
+    "support": [
+      "Tanay Chaudhary",
+      "Vaibhav Mishra"
+    ]
+  },
+  {
+    "day": "Friday",
+    "time": "10:00 - 11:00 AM",
+    "lead": "Aayush Nair",
+    "support": [
+      "Shubham Swain",
+      "Harsh Vardhan Anand"
+    ]
+  },
+  {
+    "day": "Friday",
+    "time": "11:00 - 12:00 PM",
+    "lead": "Ayush Shah",
+    "support": [
+      "Bhargav Vishal"
+    ]
+  },
+  {
+    "day": "Friday",
+    "time": "12:00 - 01:00 PM",
+    "lead": "Hemant",
+    "support": [
+      "Bhushan Gupta",
+      "Yaswanth Reddy Bontu"
+    ]
+  },
+  {
+    "day": "Friday",
+    "time": "02:00 - 03:00 PM",
+    "lead": "Divya Kaneria",
+    "support": [
+      "Rithwik Singh"
+    ]
+  },
+  {
+    "day": "Friday",
+    "time": "03:00 - 04:00 PM",
+    "lead": "Sriram Kalluri",
+    "support": [
+      "Majety Gayathri"
+    ]
+  },
+  {
+    "day": "Friday",
+    "time": "04:00 - 05:00 PM",
+    "lead": "Shaik Gani Rehan",
+    "support": [
+      "Debanjan Mukherjee"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "09:00 - 10:00 AM",
+    "lead": "Tanay Chaudhary",
+    "support": [
+      "Bhushan Gupta",
+      "Harsh Vardhan Anand"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "10:00 - 11:00 AM",
+    "lead": "Debanjan Mukherjee",
+    "support": [
+      "Bharat Chandra Eda",
+      "Vaibhav Mishra"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "11:00 - 12:00 PM",
+    "lead": "Bhargav Vishal",
+    "support": [
+      "Shubham Swain",
+      "Sriram Kalluri"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "12:00 - 01:00 PM",
+    "lead": "Aayush Nair",
+    "support": [
+      "Majety Gayathri"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "02:00 - 03:00 PM",
+    "lead": "Shaik Gani Rehan",
+    "support": [
+      "Divya Kaneria"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "03:00 - 04:00 PM",
+    "lead": "Rithwik Singh",
+    "support": [
+      "Hemant"
+    ]
+  },
+  {
+    "day": "Saturday",
+    "time": "04:00 - 05:00 PM",
+    "lead": "Ayush Shah",
+    "support": [
+      "Yaswanth Reddy Bontu"
+    ]
+  }
+]
