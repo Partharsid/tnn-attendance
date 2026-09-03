@@ -256,7 +256,7 @@ export default function Dashboard({ session }) {
           </div>
         )}
         
-        {['parth.25bcd7027@vitapstudent.ac.in', 'arnav.25bce7180@vitapstudent.ac.in', 'fazal.25bce7625@vitapstudent.ac.in'].includes(session.user.email) && (
+        {['parth.25bcd7027@vitapstudent.ac.in', 'arnav.25bce7180@vitapstudent.ac.in', 'fazal.25bce7625@vitapstudent.ac.in', 'utkarsh.24bcd7092@vitapstudent.ac.in'].includes(session.user.email) && (
           <AdminDashboard />
         )}
       </main>
