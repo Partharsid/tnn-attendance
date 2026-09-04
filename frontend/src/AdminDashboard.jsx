@@ -43,6 +43,76 @@ export default function AdminDashboard() {
     log.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDownloadPDF = () => {
+    const printWindow = window.open('', '', 'height=600,width=800');
+    
+    let html = `
+      <html>
+        <head>
+          <title>Attendance Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            h1 { text-align: center; color: #333; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            th { background-color: #f4f6f8; font-weight: bold; color: #333; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .action-start { color: green; font-weight: bold; }
+            .action-end { color: red; font-weight: bold; }
+            .footer { margin-top: 30px; font-size: 12px; text-align: center; color: #777; }
+          </style>
+        </head>
+        <body>
+          <h1>Attendance Report</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Time (Submitted)</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Slot</th>
+                <th>Action</th>
+                <th>GPS Location</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+
+    filteredLogs.forEach(log => {
+      const timeStr = format(new Date(log.timestamp), 'dd MMM yyyy, hh:mm a');
+      const actionClass = log.action_type === 'START' ? 'action-start' : 'action-end';
+      const gpsLink = `https://www.google.com/maps/search/?api=1&query=${log.latitude},${log.longitude}`;
+      
+      html += `
+        <tr>
+          <td>${timeStr}</td>
+          <td>${log.name}</td>
+          <td>${log.email}</td>
+          <td>${log.slot_day} - ${log.slot_time}</td>
+          <td class="${actionClass}">${log.action_type}</td>
+          <td><a href="${gpsLink}" target="_blank">${log.latitude.toFixed(4)}, ${log.longitude.toFixed(4)}</a></td>
+        </tr>
+      `;
+    });
+
+    html += `
+            </tbody>
+          </table>
+          <div class="footer">Generated on ${format(new Date(), 'dd MMM yyyy, hh:mm a')}</div>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.focus();
+    // Wait for styles to load
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 mt-6">
       <div className="flex justify-between items-center mb-6">
@@ -50,15 +120,23 @@ export default function AdminDashboard() {
           <Users size={24} className="text-blue-600" />
           Admin Dashboard
         </h2>
-        <div className="relative">
-          <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input 
-            type="text" 
-            placeholder="Search name or email..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={handleDownloadPDF}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+          >
+            Download PDF Report
+          </button>
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search name or email..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
       </div>
 

@@ -12,17 +12,36 @@ export default function Dashboard({ session }) {
   const email = session.user.email;
   const fullName = session.user.user_metadata?.full_name || email;
   
-  // Determine the user's registered name in the schedule
+  // STEP 1: Find the canonical name from email
+  // usersMap entries are  "Schedule Name" → "email"
+  // We find the first entry whose email matches
+  const userEmail = email.toLowerCase();
+  
+  // Get ALL names mapped to this email
+  const allMatchedNames = Object.entries(usersMap)
+    .filter(([, e]) => e.toLowerCase() === userEmail)
+    .map(([n]) => n);
+
+  // STEP 2: Find which of those names actually appears in the schedule
+  // Do a case-insensitive comparison to be safe
   let matchedName = null;
-  for (const [name, mappedEmail] of Object.entries(usersMap)) {
-    if (mappedEmail.toLowerCase() === email.toLowerCase()) {
-      matchedName = name;
+  for (const name of allMatchedNames) {
+    const nameLower = name.toLowerCase().trim();
+    const found = scheduleData.some(
+      s => s.lead.toLowerCase().trim() === nameLower ||
+           s.support.some(sup => sup.toLowerCase().trim() === nameLower)
+    );
+    if (found) {
+      // Return the name EXACTLY as it appears in the schedule
+      let scheduleName = null;
+      for (const s of scheduleData) {
+        if (s.lead.toLowerCase().trim() === nameLower) { scheduleName = s.lead; break; }
+        const sup = s.support.find(sup => sup.toLowerCase().trim() === nameLower);
+        if (sup) { scheduleName = sup; break; }
+      }
+      matchedName = scheduleName || name;
       break;
     }
-  }
-  
-  if (!matchedName && usersMap.hasOwnProperty(fullName)) {
-    matchedName = fullName;
   }
 
   const userName = matchedName || fullName;
@@ -60,18 +79,18 @@ export default function Dashboard({ session }) {
 
   useEffect(() => {
     if (matchedName) {
-      // Filter slots for this user
+      const mLower = matchedName.toLowerCase().trim();
+      // Filter slots for this user (case-insensitive)
       const slots = scheduleData.filter(
-        s => s.lead === matchedName || s.support.includes(matchedName)
+        s => s.lead.toLowerCase().trim() === mLower || 
+             s.support.some(sup => sup.toLowerCase().trim() === mLower)
       );
       setUserSlots(slots);
       
       // Determine if there is a current slot today
-      const todayStr = format(new Date(), 'EEEE'); // e.g., 'Tuesday'
+      const todayStr = format(new Date(), 'EEEE'); // e.g., 'Saturday'
       const todaysSlots = slots.filter(s => s.day === todayStr);
       
-      // We can get more complex with time checking, but for now just show today's slots
-      // and let them mark attendance if they are in one of those slots.
       setCurrentSlot(todaysSlots.length > 0 ? todaysSlots[0] : null);
     }
     
@@ -96,11 +115,42 @@ export default function Dashboard({ session }) {
       const imageSrc = webcamRef.current.getScreenshot();
       if (!imageSrc) throw new Error("Could not capture photo.");
       
+      const timestamp = new Date();
+      
+      // Create canvas for overlay
+      const canvas = document.createElement('canvas');
+      const img = new Image();
+      img.src = imageSrc;
+      
+      await new Promise((resolve) => {
+        img.onload = resolve;
+      });
+      
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      
+      // Draw original image
+      ctx.drawImage(img, 0, 0);
+      
+      // Add semi-transparent background for text
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(10, canvas.height - 70, canvas.width - 20, 60);
+      
+      // Add text overlay
+      ctx.fillStyle = 'white';
+      ctx.font = '16px Arial';
+      const timeStr = format(timestamp, 'yyyy-MM-dd HH:mm:ss');
+      const locStr = `Lat: ${location.lat.toFixed(6)}, Lng: ${location.lng.toFixed(6)}`;
+      ctx.fillText(`Time: ${timeStr}`, 20, canvas.height - 40);
+      ctx.fillText(`Location: ${locStr}`, 20, canvas.height - 20);
+      
+      const finalImageSrc = canvas.toDataURL('image/jpeg', 0.9);
+      
       // Convert base64 to blob
-      const res = await fetch(imageSrc);
+      const res = await fetch(finalImageSrc);
       const blob = await res.blob();
       
-      const timestamp = new Date();
       const fileName = `${session.user.id}/${format(timestamp, 'yyyy-MM-dd_HH-mm-ss')}_${type}.jpg`;
       
       setUploadStatus('Uploading photo...');
